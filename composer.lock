@@ -1,0 +1,52 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "1ab0a95ccda248b9369fd6bf60d49795",
+    "packages": [
+        {
+            "name": "extended-strings/strings",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/extended-strings/strings.git",
+                "reference": "c6cab7b2f21a7a7d43c469f8edc04dd988634085"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/extended-strings/strings/zipball/c6cab7b2f21a7a7d43c469f8edc04dd988634085",
+                "reference": "c6cab7b2f21a7a7d43c469f8edc04dd988634085",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "ExtendedStrings\\Strings\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0+"
+            ],
+            "time": "2017-06-11 18:02:15"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": {
+        "extended-strings/strings": 20
+    },
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}

@@ -1,0 +1,5 @@
+{
+    "require": {
+        "extended-strings/strings": "dev-master"
+    }
+}

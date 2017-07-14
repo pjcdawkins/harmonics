@@ -1,0 +1,11 @@
+name: app
+type: php:7.1
+
+web:
+  locations:
+    '/':
+      passthru: '/index.php'
+      root: 'web'
+      allow: false
+
+disk: 512
