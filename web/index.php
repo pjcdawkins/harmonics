@@ -116,7 +116,7 @@ if (!empty($_REQUEST['instrument']) && !empty($_REQUEST['note'])):
 endif;
   ?>
 
-  <p>Disclaimer: this is a quick proof-of-concept for a much better tool. There will be bugs.</p>
+  <p>Disclaimer: this is a quick proof-of-concept for a much better tool. There will be bugs (<a href="https://github.com/pjcdawkins/harmonics/issues">report issues here</a>).</p>
 
   <p>© 2017 <a href="https://ligetiquartet.com">Ligeti Quartet</a></p>
 
