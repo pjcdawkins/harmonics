@@ -109,7 +109,7 @@ if (!empty($_REQUEST['instrument']) && !empty($_REQUEST['note'])):
       echo '</p>';
     }
   } else {
-    printf("<p>No harmonics found for sounding note <code>%s</code> on a violin</p>\n", $soundingNoteName);
+    printf("<p>No harmonics found for sounding note <code>%s</code> on a violin</p>\n", isset($soundingNote) ? $soundingNote->__toString() : $soundingNoteName);
   }
 
 
