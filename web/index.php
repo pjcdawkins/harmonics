@@ -83,9 +83,6 @@ if (!empty($_REQUEST['instrument']) && !empty($_REQUEST['note'])):
     echo "<p>Sounding note: <code>" . $soundingNote . "</code></p>";
 
     foreach ($harmonics as $harmonic) {
-  	  if ($harmonic->getNumber() === 1) {
-  	    continue;
-   	  }
       $string = $harmonic->getString();
       $stringName = Note::fromFrequency($string->getFrequency(), 440.0, [$soundingNote->getAccidental()])->__toString();
       if (!in_array($stringName, $stringNames, true)) {
@@ -98,8 +95,12 @@ if (!empty($_REQUEST['instrument']) && !empty($_REQUEST['note'])):
         $gcd = Math::gcd(1, $length);
         $numerator = $length / $gcd;
         echo "<b>Natural harmonic, number " . $harmonic->getNumber() . " (position $numerator/" . 1 / $gcd . "):  </b>\n";
-        echo sprintf("<br />    sounding: <code>%s</code>\n", Note::fromFrequency($harmonic->getSoundingFrequency(), 440.0, [$soundingNote->getAccidental()]));
-        echo sprintf("<br />    half-stop position: <code>%s</code>\n", Note::fromFrequency($harmonic->getHalfStop()->getFrequency($string), 440.0, [$soundingNote->getAccidental()]));
+        if ($harmonic->getNumber() === 1) {
+          echo "<br />    fundamental / open string";
+        } else {
+          echo sprintf("<br />    sounding: <code>%s</code>\n", Note::fromFrequency($harmonic->getSoundingFrequency(), 440.0, [$soundingNote->getAccidental()]));
+          echo sprintf("<br />    half-stop position: <code>%s</code>\n", Note::fromFrequency($harmonic->getHalfStop()->getFrequency($string), 440.0, [$soundingNote->getAccidental()]));
+        }
       } else {
         echo "<b>Artificial harmonic:</b>\n";
         echo sprintf("<br />    upper (half) stop: <code>%s</code>\n", Note::fromFrequency($harmonic->getHalfStop()->getFrequency($string), 440.0, [$soundingNote->getAccidental()]));
