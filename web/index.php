@@ -84,7 +84,7 @@ if (!empty($_REQUEST['instrument']) && !empty($_REQUEST['note'])):
 
     foreach ($harmonics as $harmonic) {
       $string = $harmonic->getString();
-      $stringName = Note::fromFrequency($string->getFrequency(), 440.0, [$soundingNote->getAccidental()])->__toString();
+      $stringName = Note::fromFrequency($string->getFrequency())->__toString();
       if (!in_array($stringName, $stringNames, true)) {
         echo sprintf("<h3>String: %s</h3>\n", $stringName);
         $stringNames[] = $stringName;
