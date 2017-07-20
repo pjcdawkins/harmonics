@@ -105,7 +105,11 @@ if (!empty($_REQUEST['instrument']) && !empty($_REQUEST['note'])):
         $length = 1 - $remainingLength;
         $gcd = Math::gcd(1, $length);
         $numerator = $length / $gcd;
-        echo "<b>Natural harmonic, $numerator/" . 1 / $gcd . " along string:  </b>\n";
+        echo "<b>Natural harmonic";
+        if ($harmonic->getNumber() !== 1) {
+          echo ", $numerator/" . 1 / $gcd . " along string";
+        }
+        echo ":  </b>\n";
         if ($harmonic->getNumber() === 1) {
           echo "<br />    fundamental / open string";
         } else {
