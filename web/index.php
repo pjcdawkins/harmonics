@@ -98,6 +98,7 @@ if (!empty($_REQUEST['instrument']) && !empty($_REQUEST['note'])):
 
       $physicalLength = $string->getPhysicalLength();
       $remainingLength = $harmonic->getHalfStop()->getStringLength();
+      $shortRemainingPhysicalLength = 100;
 
       echo '<p>';
       if ($harmonic->isNatural()) {
@@ -110,32 +111,18 @@ if (!empty($_REQUEST['instrument']) && !empty($_REQUEST['note'])):
         } else {
           echo sprintf("<br />    sounding: <code>%s</code>\n", Note::fromFrequency($harmonic->getSoundingFrequency(), 440.0, [$soundingNote->getAccidental()]));
           echo sprintf("<br />    harmonic-pressure stop: <code>%s</code>\n", Note::fromFrequency($harmonic->getHalfStop()->getFrequency($string), 440.0, [$soundingNote->getAccidental()]));
-          echo sprintf("<br />    remaining string length: <span class=\"string-length%s\">%d%% (~%d mm)</span>", $remainingLength * $physicalLength < 100 ? ' short' : '', $remainingLength * 100, $remainingLength * $physicalLength);
+          echo sprintf("<br />    remaining string length: <span class=\"string-length%s\">%d%% (%d mm)</span>", $remainingLength * $physicalLength < $shortRemainingPhysicalLength ? ' short' : '', $remainingLength * 100, $remainingLength * $physicalLength);
         }
       } else {
         $halfCents = Cent::frequenciesToCents($harmonic->getHalfStop()->getStringLength(), 1);
         $baseCents = Cent::frequenciesToCents($harmonic->getBaseStop()->getStringLength(), 1);
         $intervalCents = $halfCents - $baseCents;
-        switch (round($intervalCents / 100) * 100) {
-          case 500:
-            $interval = '1 fourth';
-            break;
-
-          case 700:
-            $interval = '1 fifth';
-            break;
-
-          case 1200:
-            $interval = '1 octave';
-            break;
-
-          default:
-            $interval = sprintf('~ %dc', $intervalCents);
-        }
-        echo sprintf("<b>Artificial harmonic, %s apart:</b>\n", $interval);
+        $intervalLength = $harmonic->getBaseStop()->getStringLength() - $harmonic->getHalfStop()->getStringLength();
+        echo sprintf("<b>Artificial harmonic, %s apart:</b>\n", getIntervalName($intervalCents));
         echo sprintf("<br />    lower stop: <code>%s</code>\n", Note::fromFrequency($harmonic->getBaseStop()->getFrequency($string), 440.0, [$soundingNote->getAccidental()]));
         echo sprintf("<br />    upper (harmonic-pressure) stop: <code>%s</code>\n", Note::fromFrequency($harmonic->getHalfStop()->getFrequency($string), 440.0, [$soundingNote->getAccidental()]));
-        echo sprintf("<br />    remaining string length: <span class=\"string-length%s\">%d%% (~%d mm)</span>", $remainingLength * $physicalLength < 100 ? ' short' : '', $remainingLength * 100, $remainingLength * $physicalLength);
+        echo sprintf("<br />    distance between stops: <span class=\"string-length%s\">%d mm</span>", $intervalLength * $physicalLength < 20 ? ' short' : '', $intervalLength * $physicalLength);
+        echo sprintf("<br />    remaining string length: <span class=\"string-length%s\">%d%% (%d mm)</span>", $remainingLength * $physicalLength < $shortRemainingPhysicalLength ? ' short' : '', $remainingLength * 100, $remainingLength * $physicalLength);
       }
       echo '</p>';
     }
@@ -153,3 +140,20 @@ endif;
 
 </body>
 </html>
+<?php
+
+function getIntervalName(float $cents): string {
+  $centsString = sprintf('%.2fc', $cents);
+  $intervalNames = [
+    316 => 'a just minor third',
+    386 => 'a just major third',
+    498 => 'a just fourth',
+    702 => 'a just fifth',
+    1200 => 'an octave',
+  ];
+  if (isset($intervalNames[round($cents)])) {
+    return $intervalNames[round($cents)] . ' (' . $centsString . ')';
+  }
+
+  return $centsString;
+}
