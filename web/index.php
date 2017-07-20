@@ -80,7 +80,7 @@ if (!empty($_REQUEST['instrument']) && !empty($_REQUEST['note'])):
     $harmonics = (new HarmonicCalculator())
       ->findHarmonics($soundingNote, $instrument);
   } catch (\Exception $e) {
-    echo "<p>Error: <span class=\"error\">" . $e->getMessage() . "</span></p>";
+    echo "<p>Error: <span class=\"error\">" . htmlentities($e->getMessage()) . "</span></p>";
   }
 
   $stringNames = [];
@@ -131,7 +131,7 @@ if (!empty($_REQUEST['instrument']) && !empty($_REQUEST['note'])):
       echo '</p>';
     }
   } else {
-    printf("<p>No harmonics found for sounding note <code>%s</code> on a %s</p>\n", isset($soundingNote) ? $soundingNote->__toString() : $soundingNoteName, $instrumentName);
+    printf("<p>No harmonics found for sounding note <code>%s</code> on a %s</p>\n", isset($soundingNote) ? htmlentities($soundingNote->__toString()) : htmlentities($soundingNoteName), $instrumentName);
   }
 
 
