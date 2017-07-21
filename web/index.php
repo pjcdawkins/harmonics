@@ -16,11 +16,12 @@ $self = $self === '/index.php' ? '/' : $self;
 <html lang="en">
 <head>
   <title>Find harmonics</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style type="text/css">
     body {
       font-family: sans-serif;
       background: white;
-      margin: 40px 80px;
+      margin: 10px;
     }
     input, select {
       font-size: 1em;
@@ -36,12 +37,22 @@ $self = $self === '/index.php' ? '/' : $self;
     .string-length.short {
       color: red;
     }
+    .main-content {
+      margin: 20px 0;
+    }
+    footer {
+      margin-top: 20px;
+      font-size: smaller;
+    }
   </style>
 </head>
 <body>
 
-  <h1>String harmonics calculator</h1>
+  <header>
+    <h1>String harmonics calculator</h1>
+  </header>
 
+  <section class="navigation">
   <form action="<?php echo htmlentities($self); ?>" method="POST">
     <div>
     Instrument: <select name="instrument">
@@ -69,8 +80,12 @@ $self = $self === '/index.php' ? '/' : $self;
       &nbsp;&nbsp;<a href="<?php echo htmlentities($self); ?>">Reset</a>
     </div>
   </form>
+  </section>
+
   <?php
 if (!empty($_REQUEST['instrument']) && !empty($_REQUEST['note'])):
+
+  echo '<section class="main-content">';
 
   try {
     $instrumentName = isset($_REQUEST['instrument']) ? $_REQUEST['instrument'] : 'violin';
@@ -134,13 +149,16 @@ if (!empty($_REQUEST['instrument']) && !empty($_REQUEST['note'])):
     printf("<p>No harmonics found for sounding note <code>%s</code> on a %s</p>\n", isset($soundingNote) ? htmlentities($soundingNote->__toString()) : htmlentities($soundingNoteName), $instrumentName);
   }
 
+  echo '</section>';
 
 endif;
   ?>
 
-  <p>Disclaimer: this is a quick proof-of-concept for a much better tool. There will be bugs (<a href="https://github.com/pjcdawkins/harmonics/issues">report issues here</a>).</p>
+  <footer>
+    <p>Disclaimer: this is a quick proof-of-concept for a much better tool. There will be bugs (<a href="https://github.com/pjcdawkins/harmonics/issues">report issues here</a>).</p>
 
-  <p>© 2017 <a href="https://ligetiquartet.com">Ligeti Quartet</a></p>
+    <p>© 2017 <a href="https://ligetiquartet.com">Ligeti Quartet</a></p>
+  </footer>
 
 </body>
 </html>
