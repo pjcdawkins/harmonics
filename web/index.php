@@ -53,7 +53,7 @@ $self = $self === '/index.php' ? '/' : $self;
   </header>
 
   <section class="navigation">
-  <form action="<?php echo htmlentities($self); ?>" method="POST">
+  <form action="<?php echo htmlentities($self); ?>" method="GET">
     <div>
     Instrument: <select name="instrument">
         <?php
@@ -155,6 +155,14 @@ endif;
   ?>
 
   <footer>
+    <p class="examples">
+      Examples:
+      <a href="<?php echo htmlentities($self); ?>?instrument=violin&amp;note=E6">E6 (violin)</a> /
+      <a href="<?php echo htmlentities($self); ?>?instrument=viola&amp;note=C%237">C♯7 (viola)</a> /
+      <a href="<?php echo htmlentities($self); ?>?instrument=cello&amp;note=A5">A5 (cello)</a>
+    </p>
+
+
     <p>Disclaimer: this is a quick proof-of-concept for a much better tool. There will be bugs (<a href="https://github.com/pjcdawkins/harmonics/issues">report issues here</a>).</p>
 
     <p>© 2017 <a href="https://ligetiquartet.com">Ligeti Quartet</a></p>
@@ -165,7 +173,7 @@ endif;
 <?php
 
 function getIntervalName(float $cents): string {
-  $centsString = sprintf('%.2fc', $cents);
+  $centsString = sprintf('%.2f¢', $cents);
   $intervalNames = [
     316 => 'a just minor third',
     386 => 'a just major third',
