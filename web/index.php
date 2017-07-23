@@ -12,6 +12,8 @@ use ExtendedStrings\Strings\Note;
 
 $self = $_SERVER['PHP_SELF'];
 $self = $self === '/index.php' ? '/' : $self;
+
+header('Cache-Control: public, max-age=300');
 ?>
 <html lang="en">
 <head>
