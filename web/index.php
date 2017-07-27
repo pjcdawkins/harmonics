@@ -132,7 +132,6 @@ if (!empty($_REQUEST['instrument']) && !empty($_REQUEST['note'])):
         } else {
           echo sprintf("<br />    sounding: <code>%s</code>\n", Note::fromFrequency($harmonic->getSoundingFrequency(), 440.0, [$soundingNote->getAccidental()]));
           echo sprintf("<br />    harmonic-pressure stop: <code>%s</code>\n", Note::fromFrequency($harmonic->getHalfStop()->getFrequency($string), 440.0, [$soundingNote->getAccidental()]));
-          echo sprintf("<br />    remaining string length: <span class=\"string-length%s\">%d%% (%d mm)</span>", $remainingLength * $physicalLength < $shortRemainingPhysicalLength ? ' short' : '', $remainingLength * 100, $remainingLength * $physicalLength);
         }
       } else {
         $halfCents = Cent::frequenciesToCents($harmonic->getHalfStop()->getStringLength(), 1);
