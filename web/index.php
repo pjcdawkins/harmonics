@@ -23,12 +23,22 @@ $constraints = [
   'max-sounding-note-difference' => ['default' => 50.0, 'name' => 'Max. sounding note difference', 'unit' => '¢'],
 ];
 
+$title = 'String harmonics calculator';
+$description = 'Find all the possible harmonics that produce a given sounding note.';
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Find harmonics</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>String harmonics calculator</title>
+  <meta charset="utf-8"/>
+  <meta name="description" content="<?php echo htmlentities($description); ?>"/>
+  <meta property="og:site_name" content="<?php echo htmlentities($title); ?>"/>
+  <meta property="og:type" content="website"/>
+  <meta name="twitter:card" content="summary"/>
+  <meta name="twitter:description" content="<?php echo htmlentities($description); ?>"/>
+  <meta name="twitter:url" content="<?php echo htmlentities(sprintf('https://%s%s', $_SERVER['HTTP_HOST'], $self)); ?>"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <style type="text/css">
     body {
       font-family: sans-serif;
@@ -82,11 +92,12 @@ $constraints = [
 <body>
 
   <header>
-    <h1>String harmonics calculator</h1>
+    <h1><?php echo htmlentities($title); ?></h1>
   </header>
 
+  <p><?php echo htmlentities($description); ?></p>
+
   <div class="navigation">
-    <p>Find all the possible harmonics that produce a given sounding note.</p>
   <form action="<?php echo htmlentities($self); ?>" method="GET">
     <div>
     Sounding note: <input type="text" id="note" required name="note" placeholder="Note name (e.g. A4)" value="<?php echo isset($_REQUEST['note']) ? $_REQUEST['note'] : ''; ?>" />
@@ -98,6 +109,7 @@ $constraints = [
           'violin' => 'Violin',
           'viola' => 'Viola',
           'cello' => 'Cello',
+          'double bass' => 'Double bass',
         ];
         foreach ($options as $name => $option) {
           echo '<option value="' . $name . '"';

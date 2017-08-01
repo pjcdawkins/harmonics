@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/extended-strings/strings.git",
-                "reference": "e4aa7b3624eb2eda273a97a501ef17b667a8a2d5"
+                "reference": "b2a9800aee7b27e60fb94b325f9eb420baae936d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/extended-strings/strings/zipball/e4aa7b3624eb2eda273a97a501ef17b667a8a2d5",
-                "reference": "e4aa7b3624eb2eda273a97a501ef17b667a8a2d5",
+                "url": "https://api.github.com/repos/extended-strings/strings/zipball/b2a9800aee7b27e60fb94b325f9eb420baae936d",
+                "reference": "b2a9800aee7b27e60fb94b325f9eb420baae936d",
                 "shasum": ""
             },
             "require": {
@@ -36,7 +36,7 @@
             "license": [
                 "GPL-3.0+"
             ],
-            "time": "2017-07-24 19:41:52"
+            "time": "2017-08-01 18:14:40"
         }
     ],
     "packages-dev": [],
