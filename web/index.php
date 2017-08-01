@@ -14,7 +14,17 @@ $self = $_SERVER['PHP_SELF'];
 $self = $self === '/index.php' ? '/' : $self;
 
 header('Cache-Control: public, max-age=300');
+header('Content-Type: text/html; charset=UTF-8');
+
+$constraints = [
+  'min-stop-distance' => ['default' => 1.0, 'name' => 'Min. distance between stops', 'unit' => 'mm'],
+  'max-stop-distance' => ['default' => 120.0, 'name' => 'Max. distance between stops', 'unit' => 'mm'],
+  'min-bowed-distance' => ['default' => 20.0, 'name' => 'Min. remaining string length', 'unit' => 'mm'],
+  'max-sounding-note-difference' => ['default' => 50.0, 'name' => 'Max. sounding note difference', 'unit' => '¢'],
+];
+
 ?>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <title>Find harmonics</title>
@@ -23,12 +33,26 @@ header('Cache-Control: public, max-age=300');
     body {
       font-family: sans-serif;
       background: white;
-      margin: 10px;
+      margin: 0 auto;
+      max-width: 800px;
+      padding: 10px;
+    }
+    h1 {
+      font-size: 1.3em;
+      font-weight: normal;
+      text-transform: uppercase;
     }
     input, select {
       font-size: 1em;
       margin: 5px 0;
       background-color: white;
+    }
+    details {
+      margin: 10px 0;
+      font-size: 0.9em;
+    }
+    details input {
+      width: 4em;
     }
     code {
       font-size: 1.3em;
@@ -41,9 +65,16 @@ header('Cache-Control: public, max-age=300');
     }
     .main-content {
       margin: 20px 0;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #aaa;
+    }
+    form {
+      border: 1px solid #aaa;
+      margin: 10px auto;
+      padding: 10px;
     }
     footer {
-      margin-top: 20px;
+      margin: 20px 0;
       font-size: smaller;
     }
   </style>
@@ -54,8 +85,12 @@ header('Cache-Control: public, max-age=300');
     <h1>String harmonics calculator</h1>
   </header>
 
-  <section class="navigation">
+  <div class="navigation">
+    <p>Find all the possible harmonics that produce a given sounding note.</p>
   <form action="<?php echo htmlentities($self); ?>" method="GET">
+    <div>
+    Sounding note: <input type="text" id="note" required name="note" placeholder="Note name (e.g. A4)" value="<?php echo isset($_REQUEST['note']) ? $_REQUEST['note'] : ''; ?>" />
+    </div>
     <div>
     Instrument: <select name="instrument">
         <?php
@@ -74,15 +109,27 @@ header('Cache-Control: public, max-age=300');
         ?>
     </select>
     </div>
-    <div>
-    Sounding note: <input type="text" name="note" placeholder="Note name (e.g. A4)" value="<?php echo isset($_REQUEST['note']) ? $_REQUEST['note'] : ''; ?>" />
-    </div>
+    <details open><summary>Constraints</summary>
+      <?php
+      foreach ($constraints as $key => $constraint) {
+        $value = isset($_REQUEST[$key]) ? $_REQUEST[$key] : $constraint['default'];
+        $constraints[$key]['value'] = $value;
+        echo sprintf(
+          '%s: <input type="number" name="%s" value="%s" size="3" /> %s<br />',
+          htmlentities($constraint['name']),
+          htmlentities($key),
+          htmlentities($value),
+          htmlentities($constraint['unit'])
+        );
+      }
+      ?>
+    </details>
     <div>
       <input type="submit" class="submit" value="Find harmonics" />
       &nbsp;&nbsp;<a href="<?php echo htmlentities($self); ?>">Reset</a>
     </div>
   </form>
-  </section>
+</div>
 
   <?php
 if (!empty($_REQUEST['instrument']) && !empty($_REQUEST['note'])):
@@ -94,8 +141,14 @@ if (!empty($_REQUEST['instrument']) && !empty($_REQUEST['note'])):
     $instrument = Instrument::fromPreset($instrumentName);
     $soundingNoteName = isset($_REQUEST['note']) ? $_REQUEST['note'] : 'A4';
     $soundingNote = Note::fromName($soundingNoteName);
-    $harmonics = (new HarmonicCalculator())
-      ->findHarmonics($soundingNote, $instrument);
+    $calculator = new HarmonicCalculator();
+    $calculator->setPhysicalDistanceConstraints(
+      (float) $constraints['min-stop-distance']['value'],
+      (float) $constraints['max-stop-distance']['value'],
+      (float) $constraints['min-bowed-distance']['value']
+    );
+    $calculator->setMaxSoundingNoteDifference((float) $constraints['max-sounding-note-difference']['value']);
+    $harmonics = $calculator->findHarmonics($soundingNote, $instrument);
   } catch (\Exception $e) {
     echo "<p>Error: <span class=\"error\">" . htmlentities($e->getMessage()) . "</span></p>";
   }
@@ -166,8 +219,22 @@ endif;
 
     <p>Disclaimer: this is a quick proof-of-concept for a much better tool. There will be bugs (<a href="https://github.com/pjcdawkins/harmonics/issues">report issues here</a>).</p>
 
+    <p>Pitches are notated in scientific pitch notation (C4 = "middle C"), with deviations in cents (¢). 12-tone equal temperament is assumed for all pitches, and instruments' strings. N.B. most string players do not (and should not) tune in equal temperament.</p>
+
     <p>© 2017 <a href="https://ligetiquartet.com">Ligeti Quartet</a></p>
   </footer>
+
+<?php if (getenv('GOOGLE_ANALYTICS_ID')): ?>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', <?php echo json_encode(getenv('GOOGLE_ANALYTICS_ID')); ?>, 'auto');
+    ga('send', 'pageview');
+  </script>
+<?php endif; ?>
 
 </body>
 </html>
