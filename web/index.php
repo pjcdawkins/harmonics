@@ -148,12 +148,13 @@ if (!empty($_REQUEST['instrument']) && !empty($_REQUEST['note'])):
 
   echo '<section class="main-content">';
 
+  $instrumentName = isset($_REQUEST['instrument']) ? $_REQUEST['instrument'] : 'violin';
+  $error = false;
+  $calculator = new HarmonicCalculator();
+
   try {
-    $instrumentName = isset($_REQUEST['instrument']) ? $_REQUEST['instrument'] : 'violin';
     $instrument = Instrument::fromPreset($instrumentName);
-    $soundingNoteName = isset($_REQUEST['note']) ? $_REQUEST['note'] : 'A4';
-    $soundingNote = Note::fromName($soundingNoteName);
-    $calculator = new HarmonicCalculator();
+    $soundingNote = Note::fromName(isset($_REQUEST['note']) ? $_REQUEST['note'] : 'A4');
     $calculator->setPhysicalDistanceConstraints(
       (float) $constraints['min-stop-distance']['value'],
       (float) $constraints['max-stop-distance']['value'],
@@ -162,6 +163,7 @@ if (!empty($_REQUEST['instrument']) && !empty($_REQUEST['note'])):
     $calculator->setMaxSoundingNoteDifference((float) $constraints['max-sounding-note-difference']['value']);
     $harmonics = $calculator->findHarmonics($soundingNote, $instrument);
   } catch (\Exception $e) {
+    $error = true;
     echo "<p>Error: <span class=\"error\">" . htmlentities($e->getMessage()) . "</span></p>";
   }
 
@@ -211,8 +213,8 @@ if (!empty($_REQUEST['instrument']) && !empty($_REQUEST['note'])):
       }
       echo '</p>';
     }
-  } else {
-    printf("<p>No harmonics found for sounding note <code>%s</code> on a %s</p>\n", isset($soundingNote) ? htmlentities($soundingNote->__toString()) : htmlentities($soundingNoteName), $instrumentName);
+  } elseif (empty($error)) {
+    printf("<p>No harmonics found for sounding note <code>%s</code> on a %s</p>\n", htmlentities($soundingNote->__toString()), $instrumentName);
   }
 
   echo '</section>';
