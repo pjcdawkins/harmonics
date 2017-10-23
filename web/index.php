@@ -231,9 +231,7 @@ endif;
     </p>
 
 
-    <p>Disclaimer: this is a quick proof-of-concept for a much better tool. There will be bugs (<a href="https://github.com/pjcdawkins/harmonics/issues">report issues here</a>).</p>
-
-    <p>Very early preview of future version available <a href="https://master-7rqtwti-ja6y3m7x4bl4g.eu.platform.sh/">here</a> (subject to significant changes).</p>
+    <p>Disclaimer: this is a quick proof-of-concept for a much better tool. Very early preview of future version available <a href="https://master-7rqtwti-ja6y3m7x4bl4g.eu.platform.sh/">here</a> (subject to significant changes).</p>
 
     <p>Pitches are notated in scientific pitch notation (C4 = "middle C"), with deviations in cents (¢). 12-tone equal temperament is assumed for all pitches, and instruments' strings. N.B. most string players do not (and should not) tune in equal temperament.</p>
 
