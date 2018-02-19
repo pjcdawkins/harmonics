@@ -1,5 +1,5 @@
 name: app
-type: 'php:7.2-rc'
+type: 'php:7.2'
 
 web:
   locations:
@@ -8,3 +8,17 @@ web:
       index: ['index.php']
 
 disk: 512
+
+hooks:
+    build: |
+      set -e
+      git clone https://github.com/pjcdawkins/platformsh-api-scripts.git
+
+crons:
+  # Automatically redeploy every month to refresh LE certificates.
+  redeploy:
+    spec: '0 0 1 * *'
+    cmd: |
+      if [ "$PLATFORM_BRANCH" = master ]; then
+        bash platformsh-api-scripts/redeploy.sh
+      fi
