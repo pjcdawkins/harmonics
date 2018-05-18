@@ -12,7 +12,9 @@ disk: 512
 hooks:
     build: |
       set -e
-      git clone https://github.com/pjcdawkins/platformsh-api-scripts.git
+      if ! command -v platform >/dev/null; then
+        curl -sS https://platform.sh/cli/installer | php
+      fi
 
 crons:
   # Automatically redeploy every month to refresh LE certificates.
@@ -20,5 +22,5 @@ crons:
     spec: '0 0 1 * *'
     cmd: |
       if [ "$PLATFORM_BRANCH" = master ]; then
-        bash platformsh-api-scripts/redeploy.sh
+        platform redeploy --yes --no-wait
       fi

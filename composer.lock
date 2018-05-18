@@ -12,16 +12,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/extended-strings/strings.git",
-                "reference": "b2a9800aee7b27e60fb94b325f9eb420baae936d"
+                "reference": "5febe91aec8c9cf843da57c69d72a03d57656348"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/extended-strings/strings/zipball/b2a9800aee7b27e60fb94b325f9eb420baae936d",
-                "reference": "b2a9800aee7b27e60fb94b325f9eb420baae936d",
+                "url": "https://api.github.com/repos/extended-strings/strings/zipball/5febe91aec8c9cf843da57c69d72a03d57656348",
+                "reference": "5febe91aec8c9cf843da57c69d72a03d57656348",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.0"
+                "php": ">=7.1"
             },
             "require-dev": {
                 "phpunit/phpunit": "^6.1"
@@ -36,7 +36,7 @@
             "license": [
                 "GPL-3.0+"
             ],
-            "time": "2017-08-01 18:14:40"
+            "time": "2017-08-02T11:26:12+00:00"
         }
     ],
     "packages-dev": [],
